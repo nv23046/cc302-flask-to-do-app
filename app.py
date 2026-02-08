@@ -32,24 +32,39 @@ def index():
 @app.route("/add", methods=["POST"])
 def add():
     title = request.form.get("title")
-    if title:
+
+    if title and title.strip():
         conn = get_db()
-        conn.execute("INSERT INTO tasks (title) VALUES (?)", (title,))
+        conn.execute(
+            "INSERT INTO tasks (title) VALUES (?)",
+            (title.strip(),)
+        )
         conn.commit()
         conn.close()
+
     return redirect(url_for("index"))
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
     conn = get_db()
+
     if request.method == "POST":
         title = request.form.get("title")
         completed = 1 if request.form.get("completed") == "on" else 0
-        conn.execute("UPDATE tasks SET title=?, completed=? WHERE id=?", (title, completed, id))
+
+        conn.execute(
+            "UPDATE tasks SET title=?, completed=? WHERE id=?",
+            (title, completed, id)
+        )
         conn.commit()
         conn.close()
         return redirect(url_for("index"))
-    task = conn.execute("SELECT * FROM tasks WHERE id=?", (id,)).fetchone()
+
+    task = conn.execute(
+        "SELECT * FROM tasks WHERE id=?",
+        (id,)
+    ).fetchone()
+
     conn.close()
     return render_template("edit.html", task=task)
 
@@ -61,6 +76,20 @@ def delete(id):
     conn.close()
     return redirect(url_for("index"))
 
+@app.route("/toggle/<int:id>", methods=["POST"])
+def toggle(id):
+    conn = get_db()
+    task = conn.execute("SELECT completed FROM tasks WHERE id=?", (id,)).fetchone()
+    
+    if task:
+        new_completed = 0 if task['completed'] else 1
+        conn.execute("UPDATE tasks SET completed=? WHERE id=?", (new_completed, id))
+        conn.commit()
+    
+    conn.close()
+    return {"success": True, "completed": new_completed if task else None}
+
 if __name__ == "__main__":
     init_db()
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+
