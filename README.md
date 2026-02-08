@@ -20,3 +20,4 @@ docker-compose up --build
 - v1.0.0: initial Bootstrap UI + toggle endpoint
 - v1.1.1: minor bugfix and styling fix
 - v2.0.0: major version bump — cleaned up DB handling
+- v1.0.0: initial Bootstrap UI + toggle endpoint
