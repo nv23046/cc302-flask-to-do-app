@@ -1,23 +1,83 @@
 {% extends "base.html" %}
-{% block content %}
-<h1>My To-Do List</h1>
 
-<form action="/add" method="post">
-    <input type="text" name="title" placeholder="New task..." required>
-    <button type="submit">Add</button>
+{% block title %}My To-Do List{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">
+    <i class="fas fa-list-check"></i> My To-Do List
+</h1>
+
+<form method="POST" action="{{ url_for('add') }}" class="mb-4">
+    <div class="input-group">
+        <input
+            type="text"
+            name="title"
+            class="form-control"
+            placeholder="What do you need to do?"
+            required
+        >
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-plus"></i> Add
+        </button>
+    </div>
 </form>
 
-<ul>
-    {% for task in tasks %}
-    <li>
-        <span class="{% if task.completed %}done{% endif %}">
-            {{ task.title }}
-        </span>
-        <span>
-            <a href="/edit/{{ task.id }}">✏️</a>
-            <a href="/delete/{{ task.id }}">🗑️</a>
-        </span>
-    </li>
-    {% endfor %}
-</ul>
+<div class="task-list">
+    {% if tasks %}
+        {% for task in tasks %}
+        <div class="task-item {% if task.completed %}completed{% endif %}" data-task-id="{{ task.id }}">
+            <span class="task-checkbox" onclick="toggleTask({{ task.id }})">
+                {% if task.completed %}
+                    <i class="fas fa-check-circle"></i>
+                {% else %}
+                    <i class="fas fa-circle"></i>
+                {% endif %}
+            </span>
+            
+            <span class="task-text">{{ task.title }}</span>
+            
+            <div class="task-actions">
+                <a href="{{ url_for('edit', id=task.id) }}" class="btn-sm-icon edit">
+                    <i class="fas fa-pen"></i>
+                </a>
+                <a href="{{ url_for('delete', id=task.id) }}" class="btn-sm-icon delete">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info text-center">
+            <i class="fas fa-inbox"></i> No tasks yet. Add one to get started!
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleTask(taskId) {
+    fetch(`/toggle/${taskId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+            const checkmarkIcon = taskElement.querySelector('.task-checkbox i');
+            
+            if (data.completed) {
+                taskElement.classList.add('completed');
+                checkmarkIcon.className = 'fas fa-check-circle';
+            } else {
+                taskElement.classList.remove('completed');
+                checkmarkIcon.className = 'fas fa-circle';
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 {% endblock %}
+
