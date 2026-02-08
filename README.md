@@ -17,3 +17,4 @@
 docker-compose up --build
 
 ## Release history
+- v1.0.0: initial Bootstrap UI + toggle endpoint
