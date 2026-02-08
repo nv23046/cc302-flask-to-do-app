@@ -15,3 +15,5 @@
 
 ```bash
 docker-compose up --build
+
+## Release history
