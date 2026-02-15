@@ -191,6 +191,58 @@ def toggle(id):
     conn.close()
     return {"success": True, "completed": new_completed if task else None}
 
+# Tag Management Routes
+@app.route("/tags", methods=["GET"])
+def tags():
+    conn = get_db()
+    tags = conn.execute("SELECT * FROM tags ORDER BY name").fetchall()
+    conn.close()
+    return render_template("tags.html", tags=tags)
+
+@app.route("/tags/add", methods=["POST"])
+def add_tag():
+    name = request.form.get("name", "").strip()
+    color = request.form.get("color", "#0066cc")
+    
+    if name:
+        conn = get_db()
+        try:
+            conn.execute("INSERT INTO tags (name, color) VALUES (?, ?)", (name, color))
+            conn.commit()
+        except:
+            pass  # Tag already exists
+        conn.close()
+    
+    return redirect(url_for("tags"))
+
+@app.route("/tags/delete/<int:tag_id>", methods=["POST"])
+def delete_tag(tag_id):
+    conn = get_db()
+    conn.execute("DELETE FROM task_tags WHERE tag_id=?", (tag_id,))
+    conn.execute("DELETE FROM tags WHERE id=?", (tag_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for("tags"))
+
+@app.route("/task/<int:id>/tag/<int:tag_id>", methods=["POST"])
+def add_task_tag(id, tag_id):
+    conn = get_db()
+    try:
+        conn.execute("INSERT INTO task_tags (task_id, tag_id) VALUES (?, ?)", (id, tag_id))
+        conn.commit()
+    except:
+        pass  # Already tagged
+    conn.close()
+    return redirect(url_for("edit", id=id))
+
+@app.route("/task/<int:id>/tag/<int:tag_id>", methods=["DELETE"])
+def remove_task_tag(id, tag_id):
+    conn = get_db()
+    conn.execute("DELETE FROM task_tags WHERE task_id=? AND tag_id=?", (id, tag_id))
+    conn.commit()
+    conn.close()
+    return {"success": True}
+
 if __name__ == "__main__":
     init_db()
     app.run(host="0.0.0.0", port=5000, debug=True)
