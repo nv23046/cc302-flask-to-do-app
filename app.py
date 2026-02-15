@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
 
-__version__ = "1.0.0"
+__version__ = "0.1.0"
 
 app = Flask(__name__)
 app.config['VERSION'] = __version__
