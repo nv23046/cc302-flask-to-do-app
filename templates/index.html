@@ -7,6 +7,28 @@
     <i class="fas fa-list-check"></i> My To-Do List
 </h1>
 
+<!-- Search Bar -->
+<form method="GET" action="{{ url_for('index') }}" class="mb-4">
+    <div class="input-group">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Search tasks..."
+            value="{{ search_query or '' }}"
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+        {% if search_query %}
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-times"></i> Clear
+        </a>
+        {% endif %}
+    </div>
+</form>
+
+<!-- Add Task Form -->
 <form method="POST" action="{{ url_for('add') }}" class="mb-4">
     <div class="input-group">
         <input
@@ -34,7 +56,29 @@
                 {% endif %}
             </span>
             
-            <span class="task-text">{{ task.title }}</span>
+            <div class="task-content">
+                <span class="task-text">{{ task.title }}</span>
+                {% if task.description %}
+                <p class="task-description">{{ task.description[:100] }}{% if task.description|length > 100 %}...{% endif %}</p>
+                {% endif %}
+                <div class="task-metadata">
+                    {% if task.priority %}
+                    <span class="badge {% if task.priority == 3 %}badge-danger{% elif task.priority == 2 %}badge-warning{% else %}badge-info{% endif %}">
+                        {% if task.priority == 3 %}High{% elif task.priority == 2 %}Medium{% else %}Low{% endif %}
+                    </span>
+                    {% endif %}
+                    {% if task.due_date %}
+                    <span class="badge badge-secondary">
+                        <i class="fas fa-calendar"></i> {{ task.due_date }}
+                    </span>
+                    {% endif %}
+                    {% if task.status %}
+                    <span class="badge {% if task.status == 'done' %}badge-success{% elif task.status == 'doing' %}badge-info{% else %}badge-light{% endif %}">
+                        {{ task.status|title }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
             
             <div class="task-actions">
                 <a href="{{ url_for('edit', id=task.id) }}" class="btn-sm-icon edit">
@@ -48,10 +92,41 @@
         {% endfor %}
     {% else %}
         <div class="alert alert-info text-center">
-            <i class="fas fa-inbox"></i> No tasks yet. Add one to get started!
+            <i class="fas fa-inbox"></i> {% if search_query %}No tasks match your search.{% else %}No tasks yet. Add one to get started!{% endif %}
         </div>
     {% endif %}
 </div>
+
+<style>
+.task-content {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.task-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0 5px 0;
+    white-space: normal;
+}
+
+.task-metadata {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
+
+.badge-light {
+    background-color: #e9ecef;
+    color: #666;
+}
+</style>
 
 <script>
 function toggleTask(taskId) {
