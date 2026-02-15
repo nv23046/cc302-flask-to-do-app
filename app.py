@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
+__version__ = "1.0.0"
+
 app = Flask(__name__)
+app.config['VERSION'] = __version__
 
 DATABASE = "todo.db"
 
@@ -27,7 +30,11 @@ def index():
     conn = get_db()
     tasks = conn.execute("SELECT * FROM tasks").fetchall()
     conn.close()
-    return render_template("index.html", tasks=tasks)
+    return render_template("index.html", tasks=tasks, version=__version__)
+
+@app.route("/api/version")
+def version():
+    return {"version": __version__, "status": "ok"}
 
 @app.route("/add", methods=["POST"])
 def add():
