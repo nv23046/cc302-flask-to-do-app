@@ -57,18 +57,67 @@ def init_db():
 def index():
     conn = get_db()
     search_query = request.args.get("q", "").strip()
+    filter_status = request.args.get("status", "").strip()
+    filter_priority = request.args.get("priority", "").strip()
+    filter_due = request.args.get("due", "").strip()
+    sort_by = request.args.get("sort", "created_at").strip()
     
+    # Build query
+    query = "SELECT * FROM tasks WHERE 1=1"
+    params = []
+    
+    # Search filter
     if search_query:
-        # Search by title or description
-        tasks = conn.execute(
-            "SELECT * FROM tasks WHERE title LIKE ? OR description LIKE ? ORDER BY created_at DESC",
-            (f"%{search_query}%", f"%{search_query}%")
-        ).fetchall()
-    else:
-        tasks = conn.execute("SELECT * FROM tasks ORDER BY created_at DESC").fetchall()
+        query += " AND (title LIKE ? OR description LIKE ?)"
+        params.extend([f"%{search_query}%", f"%{search_query}%"])
     
+    # Status filter
+    if filter_status:
+        query += " AND status = ?"
+        params.append(filter_status)
+    
+    # Priority filter
+    if filter_priority and filter_priority.isdigit():
+        query += " AND priority = ?"
+        params.append(int(filter_priority))
+    
+    # Due date filter
+    from datetime import date, timedelta
+    today = date.today()
+    if filter_due == "overdue":
+        query += " AND due_date < ? AND status != 'done'"
+        params.append(str(today))
+    elif filter_due == "today":
+        query += " AND date(due_date) = ?"
+        params.append(str(today))
+    elif filter_due == "week":
+        week_end = today + timedelta(days=7)
+        query += " AND due_date BETWEEN ? AND ?"
+        params.extend([str(today), str(week_end)])
+    
+    # Sorting
+    sort_options = {
+        "created_at": "created_at DESC",
+        "due_date": "CASE WHEN due_date IS NULL THEN 1 ELSE 0 END, due_date ASC",
+        "priority": "priority DESC",
+        "title": "title ASC"
+    }
+    sort_clause = sort_options.get(sort_by, "created_at DESC")
+    query += f" ORDER BY {sort_clause}"
+    
+    tasks = conn.execute(query, params).fetchall()
     conn.close()
-    return render_template("index.html", tasks=tasks, version=__version__, search_query=search_query)
+    
+    return render_template(
+        "index.html", 
+        tasks=tasks, 
+        version=__version__,
+        search_query=search_query,
+        filter_status=filter_status,
+        filter_priority=filter_priority,
+        filter_due=filter_due,
+        sort_by=sort_by
+    )
 
 @app.route("/api/version")
 def version():
