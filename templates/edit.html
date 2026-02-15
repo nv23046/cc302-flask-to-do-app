@@ -9,8 +9,10 @@
 
 <form method="POST" class="mb-4">
     <div class="mb-3">
+        <label for="title" class="form-label">Task Title *</label>
         <input
             type="text"
+            id="title"
             name="title"
             class="form-control form-control-lg"
             value="{{ task.title }}"
@@ -18,13 +20,152 @@
             required
         >
     </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="3"
+            placeholder="Add task details..."
+        >{{ task.description or '' }}</textarea>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="priority" class="form-label">Priority</label>
+            <select id="priority" name="priority" class="form-select">
+                <option value="1" {% if task.priority == 1 %}selected{% endif %}>Low</option>
+                <option value="2" {% if task.priority == 2 %}selected{% endif %}>Medium</option>
+                <option value="3" {% if task.priority == 3 %}selected{% endif %}>High</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select id="status" name="status" class="form-select">
+                <option value="todo" {% if task.status == 'todo' %}selected{% endif %}>To Do</option>
+                <option value="doing" {% if task.status == 'doing' %}selected{% endif %}>In Progress</option>
+                <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="due_date" class="form-label">Due Date</label>
+            <input
+                type="date"
+                id="due_date"
+                name="due_date"
+                class="form-control"
+                value="{{ task.due_date or '' }}"
+            >
+        </div>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input
+            type="checkbox"
+            id="completed"
+            name="completed"
+            class="form-check-input"
+            {% if task.completed %}checked{% endif %}
+        >
+        <label class="form-check-label" for="completed">
+            Mark as completed
+        </label>
+    </div>
+
     <button type="submit" class="btn btn-success w-100">
-        <i class="fas fa-save"></i> Save
+        <i class="fas fa-save"></i> Save Changes
     </button>
 </form>
 
-<a href="{{ url_for('index') }}" class="back-link">
+<!-- Tags Section -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-tags"></i> Tags
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <label class="form-label">Assigned Tags</label>
+            <div class="tag-chips" id="assigned-tags">
+                <!-- Tags will be populated here -->
+                <span class="text-muted">No tags assigned</span>
+            </div>
+        </div>
+        
+        <form method="POST" class="d-flex gap-2">
+            <select name="tag_search" class="form-select form-select-sm" id="tag-select">
+                <option value="">Select a tag to add...</option>
+                <!-- This will be populated with available tags -->
+            </select>
+            <button type="button" class="btn btn-sm btn-primary" onclick="addSelectedTag()">
+                <i class="fas fa-plus"></i> Add
+            </button>
+            <a href="{{ url_for('tags') }}" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-cog"></i> Manage Tags
+            </a>
+        </form>
+    </div>
+</div>
+
+<a href="{{ url_for('index') }}" class="back-link mt-4 d-inline-block">
     <i class="fas fa-arrow-left"></i> Back to list
 </a>
+
+<style>
+.tag-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.tag-chip button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.tag-chip button:hover {
+    opacity: 0.8;
+}
+
+.card {
+    border: 1px solid #dee2e6;
+}
+</style>
+
+<script>
+function addSelectedTag() {
+    // This would call an endpoint to add the tag
+    // For now, it's a placeholder
+    alert('Tag management coming soon!');
+}
+
+// Populate tags (in a real app, this would come from the server)
+document.addEventListener('DOMContentLoaded', function() {
+    const tagSelect = document.getElementById('tag-select');
+    // Tags would be populated here from the server
+});
+</script>
 {% endblock %}
 

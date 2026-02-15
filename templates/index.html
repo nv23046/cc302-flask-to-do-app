@@ -7,6 +7,80 @@
     <i class="fas fa-list-check"></i> My To-Do List
 </h1>
 
+<!-- Search and Filter Bar -->
+<div class="filter-section mb-4">
+    <form method="GET" action="{{ url_for('index') }}" class="mb-3">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        placeholder="Search tasks..."
+                        value="{{ search_query or '' }}"
+                    >
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-2">
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Status</option>
+                    <option value="todo" {% if filter_status == 'todo' %}selected{% endif %}>To Do</option>
+                    <option value="doing" {% if filter_status == 'doing' %}selected{% endif %}>In Progress</option>
+                    <option value="done" {% if filter_status == 'done' %}selected{% endif %}>Done</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2">
+                <select name="priority" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Priority</option>
+                    <option value="1" {% if filter_priority == '1' %}selected{% endif %}>Low</option>
+                    <option value="2" {% if filter_priority == '2' %}selected{% endif %}>Medium</option>
+                    <option value="3" {% if filter_priority == '3' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2">
+                <select name="due" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Dates</option>
+                    <option value="overdue" {% if filter_due == 'overdue' %}selected{% endif %}>Overdue</option>
+                    <option value="today" {% if filter_due == 'today' %}selected{% endif %}>Today</option>
+                    <option value="week" {% if filter_due == 'week' %}selected{% endif %}>This Week</option>
+                </select>
+            </div>
+            
+            <div class="col-md-1">
+                {% if search_query or filter_status or filter_priority or filter_due %}
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+    
+    <!-- Sort Options -->
+    <form method="GET" action="{{ url_for('index') }}" class="d-flex gap-2">
+        <input type="hidden" name="q" value="{{ search_query or '' }}">
+        <input type="hidden" name="status" value="{{ filter_status or '' }}">
+        <input type="hidden" name="priority" value="{{ filter_priority or '' }}">
+        <input type="hidden" name="due" value="{{ filter_due or '' }}">
+        
+        <small class="text-muted align-self-center">Sort by:</small>
+        <select name="sort" class="form-select form-select-sm" style="max-width: 150px;" onchange="this.form.submit()">
+            <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Newest</option>
+            <option value="due_date" {% if sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
+            <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Priority</option>
+            <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+        </select>
+    </form>
+</div>
+
+<!-- Add Task Form -->
 <form method="POST" action="{{ url_for('add') }}" class="mb-4">
     <div class="input-group">
         <input
@@ -34,7 +108,29 @@
                 {% endif %}
             </span>
             
-            <span class="task-text">{{ task.title }}</span>
+            <div class="task-content">
+                <span class="task-text">{{ task.title }}</span>
+                {% if task.description %}
+                <p class="task-description">{{ task.description[:100] }}{% if task.description|length > 100 %}...{% endif %}</p>
+                {% endif %}
+                <div class="task-metadata">
+                    {% if task.priority %}
+                    <span class="badge {% if task.priority == 3 %}badge-danger{% elif task.priority == 2 %}badge-warning{% else %}badge-info{% endif %}">
+                        {% if task.priority == 3 %}High{% elif task.priority == 2 %}Medium{% else %}Low{% endif %}
+                    </span>
+                    {% endif %}
+                    {% if task.due_date %}
+                    <span class="badge badge-secondary">
+                        <i class="fas fa-calendar"></i> {{ task.due_date }}
+                    </span>
+                    {% endif %}
+                    {% if task.status %}
+                    <span class="badge {% if task.status == 'done' %}badge-success{% elif task.status == 'doing' %}badge-info{% else %}badge-light{% endif %}">
+                        {{ task.status|title }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
             
             <div class="task-actions">
                 <a href="{{ url_for('edit', id=task.id) }}" class="btn-sm-icon edit">
@@ -48,10 +144,48 @@
         {% endfor %}
     {% else %}
         <div class="alert alert-info text-center">
-            <i class="fas fa-inbox"></i> No tasks yet. Add one to get started!
+            <i class="fas fa-inbox"></i> {% if search_query or filter_status or filter_priority or filter_due %}No tasks match your filters.{% else %}No tasks yet. Add one to get started!{% endif %}
         </div>
     {% endif %}
 </div>
+
+<style>
+.filter-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.task-content {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.task-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0 5px 0;
+    white-space: normal;
+}
+
+.task-metadata {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
+
+.badge-light {
+    background-color: #e9ecef;
+    color: #666;
+}
+</style>
 
 <script>
 function toggleTask(taskId) {
