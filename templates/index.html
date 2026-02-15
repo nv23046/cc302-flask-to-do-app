@@ -7,26 +7,78 @@
     <i class="fas fa-list-check"></i> My To-Do List
 </h1>
 
-<!-- Search Bar -->
-<form method="GET" action="{{ url_for('index') }}" class="mb-4">
-    <div class="input-group">
-        <input
-            type="text"
-            name="q"
-            class="form-control"
-            placeholder="Search tasks..."
-            value="{{ search_query or '' }}"
-        >
-        <button class="btn btn-outline-secondary" type="submit">
-            <i class="fas fa-search"></i>
-        </button>
-        {% if search_query %}
-        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-times"></i> Clear
-        </a>
-        {% endif %}
-    </div>
-</form>
+<!-- Search and Filter Bar -->
+<div class="filter-section mb-4">
+    <form method="GET" action="{{ url_for('index') }}" class="mb-3">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        placeholder="Search tasks..."
+                        value="{{ search_query or '' }}"
+                    >
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-2">
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Status</option>
+                    <option value="todo" {% if filter_status == 'todo' %}selected{% endif %}>To Do</option>
+                    <option value="doing" {% if filter_status == 'doing' %}selected{% endif %}>In Progress</option>
+                    <option value="done" {% if filter_status == 'done' %}selected{% endif %}>Done</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2">
+                <select name="priority" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Priority</option>
+                    <option value="1" {% if filter_priority == '1' %}selected{% endif %}>Low</option>
+                    <option value="2" {% if filter_priority == '2' %}selected{% endif %}>Medium</option>
+                    <option value="3" {% if filter_priority == '3' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2">
+                <select name="due" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Dates</option>
+                    <option value="overdue" {% if filter_due == 'overdue' %}selected{% endif %}>Overdue</option>
+                    <option value="today" {% if filter_due == 'today' %}selected{% endif %}>Today</option>
+                    <option value="week" {% if filter_due == 'week' %}selected{% endif %}>This Week</option>
+                </select>
+            </div>
+            
+            <div class="col-md-1">
+                {% if search_query or filter_status or filter_priority or filter_due %}
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+    
+    <!-- Sort Options -->
+    <form method="GET" action="{{ url_for('index') }}" class="d-flex gap-2">
+        <input type="hidden" name="q" value="{{ search_query or '' }}">
+        <input type="hidden" name="status" value="{{ filter_status or '' }}">
+        <input type="hidden" name="priority" value="{{ filter_priority or '' }}">
+        <input type="hidden" name="due" value="{{ filter_due or '' }}">
+        
+        <small class="text-muted align-self-center">Sort by:</small>
+        <select name="sort" class="form-select form-select-sm" style="max-width: 150px;" onchange="this.form.submit()">
+            <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Newest</option>
+            <option value="due_date" {% if sort_by == 'due_date' %}selected{% endif %}>Due Date</option>
+            <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Priority</option>
+            <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+        </select>
+    </form>
+</div>
 
 <!-- Add Task Form -->
 <form method="POST" action="{{ url_for('add') }}" class="mb-4">
@@ -92,12 +144,19 @@
         {% endfor %}
     {% else %}
         <div class="alert alert-info text-center">
-            <i class="fas fa-inbox"></i> {% if search_query %}No tasks match your search.{% else %}No tasks yet. Add one to get started!{% endif %}
+            <i class="fas fa-inbox"></i> {% if search_query or filter_status or filter_priority or filter_due %}No tasks match your filters.{% else %}No tasks yet. Add one to get started!{% endif %}
         </div>
     {% endif %}
 </div>
 
 <style>
+.filter-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
 .task-content {
     flex-grow: 1;
     margin-left: 10px;
