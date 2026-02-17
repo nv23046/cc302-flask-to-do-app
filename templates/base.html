@@ -3,132 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}To-Do App{% endblock %}</title>
+    <title>{% block title %}TaskFlow - Modern To-Do Management{% endblock %}</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        :root {
-            --primary-color: #667eea;
-            --success-color: #48bb78;
-            --danger-color: #e53e3e;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            padding: 40px 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .app-container {
+        .sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 4px 0 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            border-left-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            border-left-color: #4ade80;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .task-card {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            max-width: 600px;
-            margin: 0 auto;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        h1 {
-            color: #333;
-            font-weight: 700;
-            margin-bottom: 30px;
+        .task-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+            transform: translateY(-2px);
         }
 
-        .task-item {
+        .task-card.completed {
+            opacity: 0.7;
+            background: #f9fafb;
+        }
+
+        .badge-priority {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .badge-priority.high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-priority.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-priority.low {
+            background: #dbeafe;
+            color: #0c2d6b;
+        }
+
+        .badge-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .badge-status.todo {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-status.doing {
+            background: #dbeafe;
+            color: #0c2d6b;
+        }
+
+        .badge-status.done {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .checkbox-custom {
+            cursor: pointer;
             display: flex;
             align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid #eee;
-            transition: background 0.2s ease;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid #d1d5db;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
-        .task-item:last-child {
-            border-bottom: none;
+        .checkbox-custom:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
         }
 
-        .task-item.completed {
-            opacity: 0.7;
+        .checkbox-custom.checked {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
         }
 
-        .task-checkbox {
+        .input-field {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 24px;
-            margin-right: 15px;
-            color: #ddd;
-            transition: all 0.2s ease;
-            min-width: 30px;
-            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
-        .task-checkbox:hover {
-            color: var(--primary-color);
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
-        .task-item.completed .task-checkbox {
-            color: var(--success-color);
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
-        .task-text {
-            flex: 1;
-            color: #333;
-            font-size: 16px;
-            transition: all 0.2s ease;
+        .btn-secondary:hover {
+            background: #d1d5db;
         }
 
-        .task-item.completed .task-text {
-            color: #999;
-            text-decoration: line-through;
+        .btn-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
-        .task-actions {
-            display: flex;
-            gap: 10px;
+        .btn-danger:hover {
+            background: #fecaca;
+            color: #7f1d1d;
         }
 
-        .btn-sm-icon {
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .icon-btn {
             background: none;
             border: none;
-            color: #999;
-            font-size: 14px;
             cursor: pointer;
-            padding: 5px 8px;
-            transition: color 0.2s ease;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            color: #6b7280;
         }
 
-        .btn-sm-icon.edit:hover {
-            color: var(--primary-color);
+        .icon-btn:hover {
+            background: #f3f4f6;
+            color: #667eea;
         }
 
-        .btn-sm-icon.delete:hover {
-            color: var(--danger-color);
+        .icon-btn.danger:hover {
+            background: #fee2e2;
+            color: #991b1b;
         }
 
-        .back-link {
-            color: var(--primary-color);
-            text-decoration: none;
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-bar {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            color: #9ca3af;
             font-size: 14px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="container-fluid p-4">
-        {% block content %}{% endblock %}
+<div class="flex h-screen bg-gray-50">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar w-64 h-screen fixed left-0 top-0 text-white overflow-y-auto">
+        <div class="p-6 border-b border-white border-opacity-10">
+            <h1 class="text-2xl font-bold flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-400"></i>
+                TaskFlow
+            </h1>
+            <p class="text-white text-opacity-70 text-sm mt-1">Manage your tasks smarter</p>
+        </div>
+
+        <nav class="p-4">
+            <div class="nav-item active px-4 py-3 rounded">
+                <i class="fas fa-home mr-3"></i>
+                <a href="{{ url_for('index') }}" class="hover:text-white transition">All Tasks</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="ml-64 flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="header">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">{% block page_title %}Dashboard{% endblock %}</h2>
+                <div class="text-sm text-gray-500">
+                    v{{ version }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content flex-1 overflow-y-auto px-6 py-6">
+            {% block content %}{% endblock %}
+        </div>
     </div>
 </div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
