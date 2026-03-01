@@ -1,0 +1,33 @@
+..F                                                                      [100%]
+=================================== FAILURES ===================================
+_______________________________ test_delete_task _______________________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_delete_task(client):
+        # Arrange
+        client.post(
+            "/add",
+            data={
+                "title": "To be deleted",
+                "description": "remove this",
+                "priority": "1",
+                "status": "todo",
+            },
+            follow_redirects=True,
+        )
+        task_id = get_task_id_by_title("To be deleted")
+    
+        # Act
+        resp = client.get(f"/delete/{task_id}", follow_redirects=True)
+    
+        # Assert
+        assert resp.status_code == 200
+        page = resp.get_data(as_text=True)
+>       assert "To be deleted" in page
+E       assert 'To be deleted' in '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=devic...rror => console.error(\'Error:\', error));\n}\n</script>\n\n\n        </div>\n    </div>\n</div>\n\n</body>\n</html>\n'
+
+tests/test_crud.py:101: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_crud.py::test_delete_task - assert 'To be deleted' in '<!DO...
+1 failed, 2 passed in 0.18s
