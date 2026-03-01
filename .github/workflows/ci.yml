@@ -30,6 +30,8 @@ jobs:
           flake8 tests --count --max-line-length=120 --statistics
       
       - name: Run tests
+        env:
+          PYTHONPATH: .
         run: |
           pytest tests/ -v
       
