@@ -4,7 +4,7 @@
 
 - Student ID: nv23046
 - Course: CC312/CC302
-- Repository: https://github.com/nv23046/cc312-flask-to-do-app
+- Repository: https://github.com/nv23046/cc302-flask-to-do-app
 - Branch: main
 
 ## Required Files
