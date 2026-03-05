@@ -77,9 +77,12 @@ PYTHONPATH=. python -m pytest tests/ -v --cov=app
 - [x] Registry shows matching image tag (`0.3.0`)
 
 ### Deliverables For Part C
-- [ ] 3-5 sentence flow summary
+- [x] 3-5 sentence flow summary
 - [x] Screenshot: release page showing new version
 - [x] Screenshot: registry page showing new tag
+
+### Flow Summary (Completed)
+I updated the repository workflows and tests so CI could run linting and automated tests on every push and pull request. I then validated the CI pipeline by producing both a failed run and a fixed successful run for troubleshooting evidence. After configuring GitHub Secrets for DockerHub credentials, I published release `v0.3.5` to trigger the CD pipeline. The CD workflow completed successfully and pushed both `0.3.5` and `latest` image tags to DockerHub. This demonstrates the full automation path from code changes to a released container image.
 
 ## Secrets Checklist (Do Not Expose Values)
 - [x] `DOCKERHUB_USERNAME` created in GitHub repo secrets
@@ -92,11 +95,11 @@ PYTHONPATH=. python -m pytest tests/ -v --cov=app
 - [ ] Failed CI screenshot and fixed CI screenshot
 - [x] DockerHub/ECR screenshot with new image tag
 - [x] GitHub Release screenshot
-- [ ] Reflection paragraph (what you learned)
+- [x] Reflection paragraph (what you learned)
 - [ ] Single final PDF or Markdown assembled and submitted
 
-## Reflection Template (Fill and Use)
-I implemented GitHub Actions CI/CD to automate testing and Docker image delivery for my Flask ToDo app. The CI workflow now checks lint and runs tests on every push and pull request to `main` and `dev`, which helped catch issues early. The CD workflow runs on release publish, extracts the semantic version from the release tag, and pushes both versioned and `latest` Docker images using GitHub Secrets. This assignment showed me how automation improves reliability, speed, and consistency compared with manual deployment.
+## Reflection (Completed)
+I implemented GitHub Actions CI/CD to automate testing and Docker image delivery for my Flask ToDo app. The CI workflow now runs lint and tests automatically on code updates, which helped identify failures quickly and verify fixes with confidence. I configured secure GitHub Secrets for DockerHub authentication and connected release publishing to automated container builds and pushes. By completing this pipeline, I learned how CI/CD improves development speed, release reliability, and repeatability compared with manual deployment steps.
 
 ## Exact Files To Include In Your Submission
 - `.github/workflows/ci.yml`
