@@ -21,15 +21,18 @@
 ### CI Evidence
 - Successful CI run (green):
   - Link: `https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714700507`
-  - Screenshot: [PASTE CI GREEN SCREENSHOT HERE]
+  - Screenshot: <img width="975" height="319" alt="image" src="https://github.com/user-attachments/assets/919e26e2-3574-480e-89d7-6c4a004982d7" />
+
 
 - Failed CI run (red):
   - Link: `https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714679433`
-  - Screenshot: [PASTE CI RED SCREENSHOT HERE]
+  - Screenshot: <img width="975" height="342" alt="image" src="https://github.com/user-attachments/assets/07d94742-bfc9-4ffe-8482-e13b629185ae" />
+
 
 - Fixed CI run (green again):
   - Link: `https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714700507`
-  - Screenshot: [PASTE CI FIXED GREEN SCREENSHOT HERE]
+  - Screenshot: <img width="975" height="314" alt="image" src="https://github.com/user-attachments/assets/687c0143-5a6c-4d22-b273-11d55f548a69" />
+
 
 ### CI Workflow File (`.github/workflows/ci.yml`)
 ```yaml
@@ -82,15 +85,18 @@ jobs:
 ### CD Evidence
 - Successful CD run (green):
   - Link: `https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22715610836`
-  - Screenshot: [PASTE CD GREEN SCREENSHOT HERE]
+  - Screenshot: <img width="975" height="298" alt="image" src="https://github.com/user-attachments/assets/819cc71f-3a67-4fa6-b9c4-a5aefdc44383" />
+
 
 - Release page:
   - Link: `https://github.com/nv23046/cc302-flask-to-do-app/releases/tag/v0.3.5`
-  - Screenshot: [PASTE RELEASE SCREENSHOT HERE]
+  - Screenshot: <img width="975" height="397" alt="image" src="https://github.com/user-attachments/assets/bba783bd-1514-4d12-8de8-3a1ba07d6833" />
+
 
 - DockerHub tags:
   - Expected tags shown: `0.3.5`, `latest`
-  - Screenshot: [PASTE DOCKERHUB TAGS SCREENSHOT HERE]
+  - Screenshot: <img width="975" height="427" alt="image" src="https://github.com/user-attachments/assets/b3925acb-531f-4a52-98e4-c282da7db3e6" />
+
 
 ### CD Workflow File (`.github/workflows/cd.yml`)
 ```yaml
