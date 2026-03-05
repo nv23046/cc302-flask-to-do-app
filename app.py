@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
-from datetime import datetime
 
 __version__ = "0.1.0"
 
@@ -9,10 +8,12 @@ app.config['VERSION'] = __version__
 
 DATABASE = "todo.db"
 
+
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
+
 
 def init_db():
     conn = get_db()
@@ -29,7 +30,7 @@ def init_db():
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
-    
+
     # Create tags table for future feature
     conn.execute("""
         CREATE TABLE IF NOT EXISTS tags (
@@ -38,7 +39,7 @@ def init_db():
             color TEXT DEFAULT '#0066cc'
         );
     """)
-    
+
     # Create task_tags junction table
     conn.execute("""
         CREATE TABLE IF NOT EXISTS task_tags (
@@ -49,9 +50,10 @@ def init_db():
             FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
         );
     """)
-    
+
     conn.commit()
     conn.close()
+
 
 @app.route("/")
 def index():
@@ -61,26 +63,26 @@ def index():
     filter_priority = request.args.get("priority", "").strip()
     filter_due = request.args.get("due", "").strip()
     sort_by = request.args.get("sort", "created_at").strip()
-    
+
     # Build query
     query = "SELECT * FROM tasks WHERE 1=1"
     params = []
-    
+
     # Search filter
     if search_query:
         query += " AND (title LIKE ? OR description LIKE ?)"
         params.extend([f"%{search_query}%", f"%{search_query}%"])
-    
+
     # Status filter
     if filter_status:
         query += " AND status = ?"
         params.append(filter_status)
-    
+
     # Priority filter
     if filter_priority and filter_priority.isdigit():
         query += " AND priority = ?"
         params.append(int(filter_priority))
-    
+
     # Due date filter
     from datetime import date, timedelta
     today = date.today()
@@ -94,7 +96,7 @@ def index():
         week_end = today + timedelta(days=7)
         query += " AND due_date BETWEEN ? AND ?"
         params.extend([str(today), str(week_end)])
-    
+
     # Sorting
     sort_options = {
         "created_at": "created_at DESC",
@@ -104,13 +106,13 @@ def index():
     }
     sort_clause = sort_options.get(sort_by, "created_at DESC")
     query += f" ORDER BY {sort_clause}"
-    
+
     tasks = conn.execute(query, params).fetchall()
     conn.close()
-    
+
     return render_template(
-        "index.html", 
-        tasks=tasks, 
+        "index.html",
+        tasks=tasks,
         version=__version__,
         search_query=search_query,
         filter_status=filter_status,
@@ -119,9 +121,11 @@ def index():
         sort_by=sort_by
     )
 
+
 @app.route("/api/version")
 def version():
     return {"version": __version__, "status": "ok"}
+
 
 @app.route("/add", methods=["POST"])
 def add():
@@ -141,6 +145,7 @@ def add():
         conn.close()
 
     return redirect(url_for("index"))
+
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
@@ -170,6 +175,7 @@ def edit(id):
     conn.close()
     return render_template("edit.html", task=task)
 
+
 @app.route("/delete/<int:id>")
 def delete(id):
     conn = get_db()
@@ -178,20 +184,25 @@ def delete(id):
     conn.close()
     return redirect(url_for("index"))
 
+
 @app.route("/toggle/<int:id>", methods=["POST"])
 def toggle(id):
     conn = get_db()
-    task = conn.execute("SELECT completed FROM tasks WHERE id=?", (id,)).fetchone()
-    
+    task = conn.execute(
+        "SELECT completed FROM tasks WHERE id=?", (id,)).fetchone()
+
     if task:
         new_completed = 0 if task['completed'] else 1
-        conn.execute("UPDATE tasks SET completed=? WHERE id=?", (new_completed, id))
+        conn.execute("UPDATE tasks SET completed=? WHERE id=?",
+                     (new_completed, id))
         conn.commit()
-    
+
     conn.close()
     return {"success": True, "completed": new_completed if task else None}
 
 # Tag Management Routes
+
+
 @app.route("/tags", methods=["GET"])
 def tags():
     conn = get_db()
@@ -199,21 +210,24 @@ def tags():
     conn.close()
     return render_template("tags.html", tags=tags)
 
+
 @app.route("/tags/add", methods=["POST"])
 def add_tag():
     name = request.form.get("name", "").strip()
     color = request.form.get("color", "#0066cc")
-    
+
     if name:
         conn = get_db()
         try:
-            conn.execute("INSERT INTO tags (name, color) VALUES (?, ?)", (name, color))
+            conn.execute(
+                "INSERT INTO tags (name, color) VALUES (?, ?)", (name, color))
             conn.commit()
-        except:
+        except sqlite3.IntegrityError:
             pass  # Tag already exists
         conn.close()
-    
+
     return redirect(url_for("tags"))
+
 
 @app.route("/tags/delete/<int:tag_id>", methods=["POST"])
 def delete_tag(tag_id):
@@ -224,26 +238,30 @@ def delete_tag(tag_id):
     conn.close()
     return redirect(url_for("tags"))
 
+
 @app.route("/task/<int:id>/tag/<int:tag_id>", methods=["POST"])
 def add_task_tag(id, tag_id):
     conn = get_db()
     try:
-        conn.execute("INSERT INTO task_tags (task_id, tag_id) VALUES (?, ?)", (id, tag_id))
+        conn.execute(
+            "INSERT INTO task_tags (task_id, tag_id) VALUES (?, ?)", (id, tag_id))
         conn.commit()
-    except:
+    except sqlite3.IntegrityError:
         pass  # Already tagged
     conn.close()
     return redirect(url_for("edit", id=id))
 
+
 @app.route("/task/<int:id>/tag/<int:tag_id>", methods=["DELETE"])
 def remove_task_tag(id, tag_id):
     conn = get_db()
-    conn.execute("DELETE FROM task_tags WHERE task_id=? AND tag_id=?", (id, tag_id))
+    conn.execute(
+        "DELETE FROM task_tags WHERE task_id=? AND tag_id=?", (id, tag_id))
     conn.commit()
     conn.close()
     return {"success": True}
 
+
 if __name__ == "__main__":
     init_db()
     app.run(host="0.0.0.0", port=5000, debug=True)
-

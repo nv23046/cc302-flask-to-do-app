@@ -7,8 +7,8 @@
 - Branch: main
 
 ## Included Workflow Files
-- CI workflow: [.github/workflows/ci.yml](.github/workflows/ci.yml)
-- CD workflow: [.github/workflows/cd.yml](.github/workflows/cd.yml)
+- CI workflow: [.github/workflows/ci.yml](../../.github/workflows/ci.yml)
+- CD workflow: [.github/workflows/cd.yml](../../.github/workflows/cd.yml)
 
 ## Verified CI Run Links (Use these)
 - CI success (green): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22542450801
@@ -65,8 +65,8 @@
 ## Exact Step-by-Step: What to Screenshot
 
 1. Open the repo in browser: https://github.com/nv23046/cc302-flask-to-do-app
-2. Open [.github/workflows/ci.yml](.github/workflows/ci.yml) on GitHub and take screenshot #1 (CI file content).
-3. Open [.github/workflows/cd.yml](.github/workflows/cd.yml) on GitHub and take screenshot #2 (CD file content).
+2. Open [.github/workflows/ci.yml](../../.github/workflows/ci.yml) on GitHub and take screenshot #1 (CI file content).
+3. Open [.github/workflows/cd.yml](../../.github/workflows/cd.yml) on GitHub and take screenshot #2 (CD file content).
 4. Open CI failed run link: https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22542415824 and take screenshot #3 (red run + failing step).
 5. Open CI success run link: https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22542450801 and take screenshot #4 (green run).
 6. In GitHub repo, go to `Settings` → `Secrets and variables` → `Actions`; confirm `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` exist (do not show values), then take screenshot #5.
