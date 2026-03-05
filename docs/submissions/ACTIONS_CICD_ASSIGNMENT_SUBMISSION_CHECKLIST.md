@@ -29,6 +29,10 @@
 - [ ] Screenshot: failed CI run (red), then fixed
 - [ ] Paste/attach `ci.yml` in submission document
 
+### CI Run Links (Generated)
+- Failed CI run (red): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714679433
+- Fixed CI run (green): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714700507
+
 ### How To Generate The Required Failed CI Screenshot
 1. Create a temporary branch from `dev`.
 2. Intentionally add a lint error in `tests/test_app.py` (for example: add trailing spaces).
