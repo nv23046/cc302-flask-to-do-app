@@ -15,6 +15,3 @@ def test_app_responds(tmp_path):
     with app_module.app.test_client() as client:
         response = client.get("/")
     assert response.status_code in [200, 302]
-
-
-x = "this line is intentionally too long for flake8 and will fail the CI lint step because it exceeds one hundred and twenty characters"
