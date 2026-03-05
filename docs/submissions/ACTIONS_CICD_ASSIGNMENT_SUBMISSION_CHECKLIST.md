@@ -25,9 +25,9 @@
 - [x] At least one real app test present (`tests/test_app.py`)
 
 ### CI Evidence Required For Submission
-- [ ] Screenshot: successful CI run (green) in GitHub Actions tab
+- [x] Screenshot: successful CI run (green) in GitHub Actions tab
 - [ ] Screenshot: failed CI run (red), then fixed
-- [ ] Paste/attach `ci.yml` in submission document
+- [x] Paste/attach `ci.yml` in submission document
 
 ### CI Run Links (Generated)
 - Failed CI run (red): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714679433
@@ -57,9 +57,9 @@ PYTHONPATH=. python -m pytest tests/ -v --cov=app
 - [x] Version and `latest` image tags configured
 
 ### CD Evidence Required For Submission
-- [ ] Screenshot: successful CD run (green)
-- [ ] Screenshot: DockerHub (or ECR) showing new image tag
-- [ ] Paste/attach `cd.yml` in submission document
+- [x] Screenshot: successful CD run (green)
+- [x] Screenshot: DockerHub (or ECR) showing new image tag
+- [x] Paste/attach `cd.yml` in submission document
 
 ### CD Run Links (Generated)
 - Failed CD run (v0.3.0): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714820237
@@ -74,24 +74,24 @@ PYTHONPATH=. python -m pytest tests/ -v --cov=app
 - [ ] PR merged to `main`
 - [x] New release published (example: `v0.3.0`)
 - [x] CD run triggered and green
-- [ ] Registry shows matching image tag (`0.3.0`)
+- [x] Registry shows matching image tag (`0.3.0`)
 
 ### Deliverables For Part C
 - [ ] 3-5 sentence flow summary
-- [ ] Screenshot: release page showing new version
-- [ ] Screenshot: registry page showing new tag
+- [x] Screenshot: release page showing new version
+- [x] Screenshot: registry page showing new tag
 
 ## Secrets Checklist (Do Not Expose Values)
 - [x] `DOCKERHUB_USERNAME` created in GitHub repo secrets
 - [x] `DOCKERHUB_TOKEN` created in GitHub repo secrets
-- [ ] No secrets committed in repository files
+- [x] No secrets committed in repository files
 
 ## Final Submission Package Checklist
-- [ ] CI workflow file (`ci.yml`) + successful CI screenshot
-- [ ] CD workflow file (`cd.yml`) + successful CD screenshot
+- [x] CI workflow file (`ci.yml`) + successful CI screenshot
+- [x] CD workflow file (`cd.yml`) + successful CD screenshot
 - [ ] Failed CI screenshot and fixed CI screenshot
-- [ ] DockerHub/ECR screenshot with new image tag
-- [ ] GitHub Release screenshot
+- [x] DockerHub/ECR screenshot with new image tag
+- [x] GitHub Release screenshot
 - [ ] Reflection paragraph (what you learned)
 - [ ] Single final PDF or Markdown assembled and submitted
 
