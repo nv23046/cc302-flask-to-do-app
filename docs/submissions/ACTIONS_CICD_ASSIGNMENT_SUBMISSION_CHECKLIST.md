@@ -61,13 +61,19 @@ PYTHONPATH=. python -m pytest tests/ -v --cov=app
 - [ ] Screenshot: DockerHub (or ECR) showing new image tag
 - [ ] Paste/attach `cd.yml` in submission document
 
+### CD Run Links (Generated)
+- Failed CD run (v0.3.0): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22714820237
+- Failed CD run (v0.3.4): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22715547246
+- Successful CD run (v0.3.5): https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22715610836
+- Release page (v0.3.5): https://github.com/nv23046/cc302-flask-to-do-app/releases/tag/v0.3.5
+
 ## Part C: End-to-End Flow Evidence
 - [ ] Small change committed and pushed to `dev`
 - [ ] CI run on `dev` is green
 - [ ] PR opened from `dev` to `main`
 - [ ] PR merged to `main`
-- [ ] New release published (example: `v0.3.0`)
-- [ ] CD run triggered and green
+- [x] New release published (example: `v0.3.0`)
+- [x] CD run triggered and green
 - [ ] Registry shows matching image tag (`0.3.0`)
 
 ### Deliverables For Part C
