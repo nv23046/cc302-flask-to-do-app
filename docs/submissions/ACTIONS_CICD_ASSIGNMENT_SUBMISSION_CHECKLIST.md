@@ -72,8 +72,8 @@ PYTHONPATH=. python -m pytest tests/ -v --cov=app
 - [ ] Screenshot: registry page showing new tag
 
 ## Secrets Checklist (Do Not Expose Values)
-- [ ] `DOCKERHUB_USERNAME` created in GitHub repo secrets
-- [ ] `DOCKERHUB_TOKEN` created in GitHub repo secrets
+- [x] `DOCKERHUB_USERNAME` created in GitHub repo secrets
+- [x] `DOCKERHUB_TOKEN` created in GitHub repo secrets
 - [ ] No secrets committed in repository files
 
 ## Final Submission Package Checklist
