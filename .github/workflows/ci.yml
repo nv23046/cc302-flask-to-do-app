@@ -26,8 +26,10 @@ jobs:
           pip install pytest pytest-flask
       
       - name: Run tests
+        env:
+          PYTHONPATH: .
         run: |
-          pytest --tb=short -v || true
+          pytest --tb=short -v
       
       - name: Build Docker image
         run: |
