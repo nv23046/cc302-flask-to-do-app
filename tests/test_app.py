@@ -5,6 +5,9 @@ def test_app_import():
     assert app_module.app is not None
 
 
+def test_intentional_syntax_error(
+
+
 def test_app_responds(tmp_path):
     """Smoke test: app responds to index route."""
     test_db = tmp_path / "test_todo.db"
