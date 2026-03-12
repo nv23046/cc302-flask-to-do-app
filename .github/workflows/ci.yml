@@ -27,7 +27,7 @@ jobs:
       
       - name: Run tests
         run: |
-          pytest --tb=short -v || true
+          pytest --tb=short -v
       
       - name: Build Docker image
         run: |
