@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 # Build arguments for version info
-ARG VERSION=1.0.0
+ARG VERSION=2.0.0
 ARG BUILD_DATE
 ARG VCS_REF
 
@@ -15,6 +15,8 @@ LABEL org.opencontainers.image.source="https://github.com/nv23046/cc312-flask-to
 LABEL maintainer="nv23046"
 
 WORKDIR /app
+
+ENV APP_VERSION=${VERSION}
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

@@ -3,75 +3,41 @@
 ## Student Information
 - Student ID: nv23046
 - Course: CC302
-- Repository: https://github.com/nv23046/cc302-flask-to-do-app
-- PR Link (feature -> dev): https://github.com/nv23046/cc302-flask-to-do-app/pull/5
+- Repository: https://github.com/nv23046/cc312-flask-to-do-app
 - Submission File Name: CC302_WXX_nv23046_Evidence.zip
 
-## Screenshot 1 - Dev Branch Protection Rule
-Paste screenshot here.
+## Branch List Evidence
+```text
+	dev                                  fc52983 [origin/dev] Merge pull request #3 from nv23046/feature/feat3
+	feature/feat1                        0e5c23c [origin/feature/feat1] feat: add feature/feat1 change
+	feature/feat2                        3bfc742 [origin/feature/feat2] feat: add feature/feat2 change
+	feature/feat3                        c0372a2 [origin/feature/feat3] feat: add feature/feat3 change
+	feature/filters-sorting              510c40c [origin/feature/filters-sorting] feat(filters): add advanced filtering and sorting capabilities
+* feature/quality-gate-fail-pass-proof b990acc [origin/feature/quality-gate-fail-pass-proof] docs: add branch quality gate submission documents
+	feature/task-descriptions            e82f270 [origin/feature/task-descriptions] feat(tasks): add description, priority, due_date, and status fields
+	feature/task-tags                    c2ce9ed [origin/feature/task-tags] feat(tags): implement task tags and label management system
+	main                                 4d78b1a [origin/main: behind 1] docs: add one-file final CI/CD submission template
+```
 
-Required to show:
-- Require a pull request before merging = ON
-- Require status checks to pass before merging = ON
-- Required check includes: test (CI - Build and Test)
+## Pull Requests
+- Feature branch 1 -> dev: https://github.com/nv23046/cc312-flask-to-do-app/pull/1
+- Feature branch 2 -> dev: https://github.com/nv23046/cc312-flask-to-do-app/pull/2
+- Feature branch 3 -> dev: https://github.com/nv23046/cc312-flask-to-do-app/pull/3
+- dev -> main: https://github.com/nv23046/cc312-flask-to-do-app/pull/4
 
-## Screenshot 2 - PR Blocked (Red Gate)
-Paste screenshot here.
+## Release And Versioning
+- Git tag: v0.1.0
+- GitHub Release: https://github.com/nv23046/cc312-flask-to-do-app/releases/tag/v0.1.0
+- Release notes already describe the three feature merges and the published Docker image version 0.1.0.
 
-Open:
-- https://github.com/nv23046/cc302-flask-to-do-app/pull/5
+## Docker Evidence
+- Local image build succeeded with: `docker build --build-arg VERSION=0.1.0 -t nv23046/todo-saas:0.1.0 .`
+- Local image tag exists as `nv23046/todo-saas:0.1.0`.
+- A push attempt from this environment failed because the available DockerHub token does not have write scope, so the registry publish step still needs a write-scoped DockerHub credential.
 
-Required to show:
-- Merge blocked state
-- Message equivalent to: Required checks have not passed
-
-## Screenshot 3 - Failed CI Run (Red)
-Paste screenshot here.
-
-Open:
-- https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22992427744
-
-Required to show:
-- Workflow run is failed (red)
-- Workflow name visible
-
-## Screenshot 4 - PR Allowed (Green Gate)
-Paste screenshot here.
-
-Open:
-- https://github.com/nv23046/cc302-flask-to-do-app/pull/5
-
-Required to show:
-- Checks are green
-- Merge is allowed
-
-## Screenshot 5 - Passing CI Run (Green)
-Paste screenshot here.
-
-Open:
-- https://github.com/nv23046/cc302-flask-to-do-app/actions/runs/22992478076
-
-Required to show:
-- Workflow run is successful (green)
-- Workflow name visible
-
-## Screenshot 6 - Main Branch Protection Rule
-Paste screenshot here.
-
-Required to show:
-- Require a pull request before merging = ON
-- Require status checks to pass before merging = ON
-
-## Short Explanation (5-7 lines)
-I created a feature branch and opened a pull request into dev.
-To prove the quality gate, I introduced a controlled failure and CI turned red.
-Because required checks were not passing, the PR merge was blocked.
-I then fixed the failing issue and pushed to the same PR branch.
-CI reran and turned green, and the PR became mergeable.
-This confirms that branch protection and required status checks are working correctly.
-
-## Final Check Before Submission
-- All 6 screenshots pasted
-- PR link present
-- Explanation included
-- Zip file named exactly: CC302_WXX_nv23046_Evidence.zip
+## Short Explanation
+I created a dev branch from main and merged three feature branches into it through pull requests.
+Each feature branch stayed focused on one change set, which kept the history readable and easier to review.
+After the feature merges, I merged dev back into main so the release branch stayed stable.
+I tagged the release as v0.1.0 and used that semantic version for the Docker image build.
+This workflow showed how branch protection, PR reviews, and versioned releases fit together cleanly.
