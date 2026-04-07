@@ -20,10 +20,13 @@
 ```
 
 ## Pull Requests
-- Feature branch 1 -> dev: https://github.com/nv23046/cc302-flask-to-do-app/pull/1
-- Feature branch 2 -> dev: https://github.com/nv23046/cc302-flask-to-do-app/pull/2
-- Feature branch 3 -> dev: https://github.com/nv23046/cc302-flask-to-do-app/pull/3
+- Feature branch 1 -> dev (feature/feat1): https://github.com/nv23046/cc302-flask-to-do-app/pull/1
+- Feature branch 2 -> dev (feature/feat2): https://github.com/nv23046/cc302-flask-to-do-app/pull/2
+- Feature branch 3 -> dev (feature/feat3): https://github.com/nv23046/cc302-flask-to-do-app/pull/3
 - dev -> main: https://github.com/nv23046/cc302-flask-to-do-app/pull/4
+- Quality gate verification PR (CI fail then pass proof): https://github.com/nv23046/cc302-flask-to-do-app/pull/5
+
+Note: PRs #1-#4 are the merged workflow PRs used for the feature-branch and release flow. PR #5 is the separate branch protection and required-check proof for the quality gate evidence.
 
 ## Release And Versioning
 - Git tag: v0.1.0
