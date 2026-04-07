@@ -3,7 +3,7 @@
 ## Student Information
 - Student ID: nv23046
 - Course: CC302
-- Repository: https://github.com/nv23046/cc312-flask-to-do-app
+- Repository: https://github.com/nv23046/cc302-flask-to-do-app
 - Submission File Name: CC302_WXX_nv23046_Evidence.zip
 
 ## Branch List Evidence
@@ -20,14 +20,14 @@
 ```
 
 ## Pull Requests
-- Feature branch 1 -> dev: https://github.com/nv23046/cc312-flask-to-do-app/pull/1
-- Feature branch 2 -> dev: https://github.com/nv23046/cc312-flask-to-do-app/pull/2
-- Feature branch 3 -> dev: https://github.com/nv23046/cc312-flask-to-do-app/pull/3
-- dev -> main: https://github.com/nv23046/cc312-flask-to-do-app/pull/4
+- Feature branch 1 -> dev: https://github.com/nv23046/cc302-flask-to-do-app/pull/1
+- Feature branch 2 -> dev: https://github.com/nv23046/cc302-flask-to-do-app/pull/2
+- Feature branch 3 -> dev: https://github.com/nv23046/cc302-flask-to-do-app/pull/3
+- dev -> main: https://github.com/nv23046/cc302-flask-to-do-app/pull/4
 
 ## Release And Versioning
 - Git tag: v0.1.0
-- GitHub Release: https://github.com/nv23046/cc312-flask-to-do-app/releases/tag/v0.1.0
+- GitHub Release: https://github.com/nv23046/cc302-flask-to-do-app/releases/tag/v0.1.0
 - Release notes already describe the three feature merges and the published Docker image version 0.1.0.
 
 ## Docker Evidence
