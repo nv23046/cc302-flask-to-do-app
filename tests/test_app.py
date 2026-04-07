@@ -8,7 +8,7 @@ def test_version_endpoint_uses_runtime_version(monkeypatch):
 
 def test_version_endpoint_defaults_to_baked_version(monkeypatch):
     monkeypatch.delenv("APP_VERSION", raising=False)
-    assert app_module.get_version() == "2.0.0"
+    assert app_module.get_version() == "0.1.0"
 
 
 def test_app_import():

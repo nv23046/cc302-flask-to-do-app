@@ -3,10 +3,10 @@ services:
     build:
       context: .
       args:
-        VERSION: ${APP_VERSION:-2.0.0}
+        VERSION: ${APP_VERSION:-0.1.0}
     ports:
       - "5000:5000"
     volumes:
       - .:/app
     environment:
-      APP_VERSION: ${APP_VERSION:-2.0.0}
+      APP_VERSION: ${APP_VERSION:-0.1.0}

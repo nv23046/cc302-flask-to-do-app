@@ -3,7 +3,7 @@ import os
 import sqlite3
 from datetime import datetime
 
-__version__ = "2.0.0"
+__version__ = "0.1.0"
 
 
 def get_version():
