@@ -26,21 +26,23 @@ jobs:
           pip install pytest pytest-flask
       
       - name: Run tests
+        env:
+          PYTHONPATH: .
         run: |
-          pytest --tb=short -v || true
+          pytest --tb=short -v
       
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg VERSION=1.0.0 \
+            --build-arg VERSION=0.1.0 \
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg VCS_REF=${{ github.sha }} \
-            -t nv23046/cc312-flask-to-do-app:test \
+            -t nv23046/cc302-flask-to-do-app:test \
             .
       
       - name: Test Docker image
         run: |
-          docker run --rm -d -p 5000:5000 --name test-app nv23046/cc312-flask-to-do-app:test
+          docker run --rm -d -p 5000:5000 --name test-app nv23046/cc302-flask-to-do-app:test
           sleep 3
           curl -f http://localhost:5000/ || exit 1
           curl -f http://localhost:5000/api/version || exit 1

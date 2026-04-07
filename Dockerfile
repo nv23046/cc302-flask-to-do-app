@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 # Build arguments for version info
-ARG VERSION=1.0.0
+ARG VERSION=0.1.0
 ARG BUILD_DATE
 ARG VCS_REF
 
@@ -11,10 +11,12 @@ LABEL org.opencontainers.image.created=$BUILD_DATE
 LABEL org.opencontainers.image.revision=$VCS_REF
 LABEL org.opencontainers.image.title="Flask To-Do Application"
 LABEL org.opencontainers.image.description="A simple To-Do list application built with Flask and SQLite"
-LABEL org.opencontainers.image.source="https://github.com/nv23046/cc312-flask-to-do-app"
+LABEL org.opencontainers.image.source="https://github.com/nv23046/cc302-flask-to-do-app"
 LABEL maintainer="nv23046"
 
 WORKDIR /app
+
+ENV APP_VERSION=${VERSION}
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

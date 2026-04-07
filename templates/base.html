@@ -125,6 +125,12 @@
     <div class="container-fluid p-4">
         {% block content %}{% endblock %}
     </div>
+
+    {% if version %}
+    <div class="text-center pb-3">
+        <small class="text-muted">Running version {{ version }}</small>
+    </div>
+    {% endif %}
 </div>
 
 <!-- Bootstrap JS -->

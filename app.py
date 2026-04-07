@@ -1,11 +1,25 @@
 from flask import Flask, render_template, request, redirect, url_for
+import os
 import sqlite3
 from datetime import datetime
 
-__version__ = "1.0.0"
+__version__ = "0.1.0"
+
+
+def get_version():
+    version = os.getenv("APP_VERSION")
+    if version:
+        return version
+
+    return __version__
 
 app = Flask(__name__)
-app.config['VERSION'] = __version__
+app.config['VERSION'] = get_version()
+
+
+@app.context_processor
+def inject_version():
+    return {"version": get_version()}
 
 DATABASE = "todo.db"
 
@@ -111,7 +125,7 @@ def index():
     return render_template(
         "index.html", 
         tasks=tasks, 
-        version=__version__,
+        version=get_version(),
         search_query=search_query,
         filter_status=filter_status,
         filter_priority=filter_priority,
@@ -121,7 +135,7 @@ def index():
 
 @app.route("/api/version")
 def version():
-    return {"version": __version__, "status": "ok"}
+    return {"version": get_version(), "status": "ok"}
 
 @app.route("/add", methods=["POST"])
 def add():
